@@ -28,6 +28,14 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./json-formatter')),
   },
   {
+    id: 'ip-calculator',
+    label: 'IP Calculator',
+    icon: '⧉',
+    tags: ['ip', 'subnet', 'network', 'cidr', 'netmask', 'calculator'],
+    category: 'network',
+    component: lazy(() => import('./ip-calculator')),
+  },
+  {
     id: 'base64',
     label: 'Base64 Encode/Decode',
     icon: '⇌',
