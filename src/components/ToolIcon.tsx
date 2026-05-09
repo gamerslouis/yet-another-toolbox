@@ -6,14 +6,14 @@ interface ToolIconProps {
   iconClassName?: string
 }
 
-export function ToolIcon({ icon, className, iconClassName }: ToolIconProps) {
+export function ToolIcon({ icon, className, iconClassName = 'size-4' }: ToolIconProps) {
   if (typeof icon === 'string') {
     return <span className={className}>{icon}</span>
   }
   const Icon = icon
   return (
     <span className={className}>
-      <Icon className={iconClassName ?? 'size-4'} />
+      <Icon className={iconClassName} />
     </span>
   )
 }

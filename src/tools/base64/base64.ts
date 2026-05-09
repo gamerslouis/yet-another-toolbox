@@ -6,8 +6,11 @@ export type Result =
 
 export function encode(input: string): string {
   const bytes = new TextEncoder().encode(input)
+  const CHUNK = 0x8000
   let bin = ''
-  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i])
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode(...bytes.subarray(i, i + CHUNK))
+  }
   return btoa(bin)
 }
 
@@ -18,38 +21,32 @@ export function decode(input: string): string {
   return new TextDecoder('utf-8', { fatal: true }).decode(bytes)
 }
 
-export function looksLikeBase64(input: string): boolean {
+function tryDecode(input: string): string | null {
   const stripped = input.replace(/\s/g, '')
-  if (!stripped || stripped.length % 4 !== 0) return false
-  if (!/^[A-Za-z0-9+/]*={0,2}$/.test(stripped)) return false
+  if (!stripped || stripped.length % 4 !== 0) return null
+  if (!/^[A-Za-z0-9+/]*={0,2}$/.test(stripped)) return null
   try {
-    decode(stripped)
-    return true
+    return decode(stripped)
   } catch {
-    return false
+    return null
   }
+}
+
+export function looksLikeBase64(input: string): boolean {
+  return tryDecode(input) !== null
 }
 
 export function process(input: string, mode: Mode): Result {
   if (!input.trim()) return { ok: true, output: '', resolvedMode: 'encode' }
 
   if (mode === 'auto') {
-    if (looksLikeBase64(input)) {
-      try {
-        return { ok: true, output: decode(input.replace(/\s/g, '')), resolvedMode: 'decode' }
-      } catch {
-        // decoded bytes are not valid UTF-8 — fall through to encode
-      }
-    }
+    const decoded = tryDecode(input)
+    if (decoded !== null) return { ok: true, output: decoded, resolvedMode: 'decode' }
     return { ok: true, output: encode(input), resolvedMode: 'encode' }
   }
 
   if (mode === 'encode') {
-    try {
-      return { ok: true, output: encode(input), resolvedMode: 'encode' }
-    } catch (e) {
-      return { ok: false, error: e instanceof Error ? e.message : 'Encode failed' }
-    }
+    return { ok: true, output: encode(input), resolvedMode: 'encode' }
   }
 
   try {
