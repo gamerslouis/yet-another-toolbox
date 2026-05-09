@@ -93,7 +93,10 @@ export function CommandPalette({ tools, onSelect, onClose }: CommandPaletteProps
                 onMouseEnter={() => setCursor(i)}
                 onClick={() => onSelect(tool)}
               >
-                <ToolIcon icon={tool.icon} className="w-6 text-center text-base text-muted-foreground flex items-center justify-center" />
+                <ToolIcon
+                  icon={tool.icon}
+                  className="w-6 text-center text-base text-muted-foreground flex items-center justify-center"
+                />
                 <span className="flex-1 text-sm text-foreground">{tool.label}</span>
                 {i === cursor && (
                   <kbd className="rounded border border-border bg-secondary px-1 py-0.5 text-[10px] font-mono text-muted-foreground">

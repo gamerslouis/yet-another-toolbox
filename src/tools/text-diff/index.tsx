@@ -1,19 +1,12 @@
 import { useMemo, useState } from 'react'
 import { Textarea } from '@/components/ui/textarea'
+import { CopyButton } from '@/components/CopyButton'
 import { cn } from '@/lib/utils'
 import { diffLines } from './diffLines'
 
-const INITIAL_LEFT = `hello world
-foo bar
-baz`
-
-const INITIAL_RIGHT = `hello world
-foo baz
-baz qux`
-
 export default function TextDiffTool() {
-  const [left, setLeft] = useState(INITIAL_LEFT)
-  const [right, setRight] = useState(INITIAL_RIGHT)
+  const [left, setLeft] = useState('')
+  const [right, setRight] = useState('')
 
   const diff = useMemo(() => diffLines(left, right), [left, right])
   const changeCount = diff.filter((d) => d.type !== 'equal').length
@@ -26,23 +19,29 @@ export default function TextDiffTool() {
           <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Original
           </label>
-          <Textarea
-            value={left}
-            onChange={(e) => setLeft(e.target.value)}
-            className="min-h-[180px] resize-y font-mono text-sm"
-            placeholder="Paste original text…"
-          />
+          <div className="relative">
+            <Textarea
+              value={left}
+              onChange={(e) => setLeft(e.target.value)}
+              className="min-h-[180px] resize-y font-mono text-sm pr-10"
+              placeholder="Paste original text…"
+            />
+            <CopyButton text={left} className="absolute top-1.5 right-1.5" />
+          </div>
         </div>
         <div className="flex flex-col gap-1.5">
           <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Modified
           </label>
-          <Textarea
-            value={right}
-            onChange={(e) => setRight(e.target.value)}
-            className="min-h-[180px] resize-y font-mono text-sm"
-            placeholder="Paste modified text…"
-          />
+          <div className="relative">
+            <Textarea
+              value={right}
+              onChange={(e) => setRight(e.target.value)}
+              className="min-h-[180px] resize-y font-mono text-sm pr-10"
+              placeholder="Paste modified text…"
+            />
+            <CopyButton text={right} className="absolute top-1.5 right-1.5" />
+          </div>
         </div>
       </div>
 

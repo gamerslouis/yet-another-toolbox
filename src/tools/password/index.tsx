@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
+import { useClipboard } from '@/lib/useClipboard'
 import { genPassword, strengthScore, type PasswordOptions } from './genPassword'
 
 const STRENGTH_LABELS = ['', 'Weak', 'Fair', 'Good', 'Strong'] as const
@@ -33,7 +34,7 @@ const DEFAULT_OPTS: PasswordOptions = {
 export default function PasswordTool() {
   const [opts, setOpts] = useState<PasswordOptions>(DEFAULT_OPTS)
   const [password, setPassword] = useState('')
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useClipboard()
 
   const generate = useCallback(() => {
     setPassword(genPassword(opts))
@@ -42,13 +43,6 @@ export default function PasswordTool() {
   useEffect(() => {
     generate()
   }, [generate])
-
-  const copy = () => {
-    if (!password) return
-    void navigator.clipboard.writeText(password)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
 
   const toggle = (key: keyof Omit<PasswordOptions, 'length'>) =>
     setOpts((o) => ({ ...o, [key]: !o[key] }))
@@ -63,7 +57,7 @@ export default function PasswordTool() {
         <span className="flex-1 font-mono text-base tracking-widest break-all text-foreground">
           {password || '—'}
         </span>
-        <Button variant="ghost" size="icon" onClick={copy} title="Copy">
+        <Button variant="ghost" size="icon" onClick={() => copy(password)} title="Copy">
           {copied ? <Check className="size-4 text-success" /> : <Copy className="size-4" />}
         </Button>
         <Button variant="ghost" size="icon" onClick={generate} title="Regenerate">

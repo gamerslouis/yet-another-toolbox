@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { CopyButton } from '@/components/CopyButton'
 import { cn } from '@/lib/utils'
 import { formatJson } from './formatJson'
 
-const INITIAL = '{"name":"Louis","tools":["diff","password"],"active":true}'
-
 export default function JsonFormatterTool() {
-  const [input, setInput] = useState(INITIAL)
+  const [input, setInput] = useState('')
   const [indent, setIndent] = useState<2 | 4>(2)
 
   const result = useMemo(() => formatJson(input, indent), [input, indent])
@@ -20,12 +19,15 @@ export default function JsonFormatterTool() {
           <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Input JSON
           </label>
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="min-h-[320px] resize-y font-mono text-sm"
-            placeholder="Paste JSON here…"
-          />
+          <div className="relative">
+            <Textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="min-h-[320px] resize-y font-mono text-sm pr-10"
+              placeholder="Paste JSON here…"
+            />
+            <CopyButton text={input} className="absolute top-1.5 right-1.5" />
+          </div>
         </div>
 
         {/* Output */}
@@ -51,7 +53,7 @@ export default function JsonFormatterTool() {
           </div>
           <div
             className={cn(
-              'min-h-[320px] overflow-auto rounded-md border bg-secondary/50 px-3 py-2',
+              'relative min-h-[320px] overflow-auto rounded-md border bg-secondary/50 px-3 py-2 pr-10',
               result.valid ? 'border-border' : 'border-destructive/50',
             )}
           >
@@ -62,6 +64,10 @@ export default function JsonFormatterTool() {
             ) : (
               <span className="text-destructive text-xs">{result.error}</span>
             )}
+            <CopyButton
+              text={result.valid ? result.output : ''}
+              className="absolute top-1.5 right-1.5"
+            />
           </div>
         </div>
       </div>

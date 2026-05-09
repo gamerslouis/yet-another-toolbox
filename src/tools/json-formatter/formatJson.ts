@@ -5,6 +5,7 @@ export interface FormatResult {
 }
 
 export function formatJson(input: string, indent: 2 | 4): FormatResult {
+  if (!input.trim()) return { output: '', error: null, valid: true }
   try {
     const parsed = JSON.parse(input) as unknown
     return { output: JSON.stringify(parsed, null, indent), error: null, valid: true }

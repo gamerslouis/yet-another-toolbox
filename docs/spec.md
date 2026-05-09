@@ -9,19 +9,19 @@ Deployable to Cloudflare Pages, GitHub Pages, or Netlify as a static site.
 
 ## Core Tools (fully implemented)
 
-| Tool               | Description                                                                   |
-| ------------------ | ----------------------------------------------------------------------------- |
-| Text Diff          | Line-by-line comparison of two text blocks, auto-updates on input             |
-| Password Generator | Charset options (upper/lower/digits/symbols), strength meter, clipboard copy  |
-| JSON Formatter     | Format & validate JSON with configurable indent (2 or 4 spaces), auto-updates |
+| Tool                 | Description                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------ |
+| Text Diff            | Line-by-line comparison of two text blocks, auto-updates on input                          |
+| Password Generator   | Charset options (upper/lower/digits/symbols), strength meter, clipboard copy               |
+| JSON Formatter       | Format & validate JSON with configurable indent (2 or 4 spaces), auto-updates              |
+| Base64 Encode/Decode | Auto-detects encode vs decode; manual override (Auto / Encode / Decode toggle); UTF-8-safe |
 
 ## Placeholder Tools (UI shell, logic TBD)
 
-| Tool                 | Notes                                                             |
-| -------------------- | ----------------------------------------------------------------- |
-| Base64 Encode/Decode | Encode/decode between plain text and Base64                       |
-| Color Picker         | Hex / RGB / HSL converter and picker                              |
-| Image Converter      | Pre-isolated chunk; will load heavy WASM/canvas library in future |
+| Tool            | Notes                                                             |
+| --------------- | ----------------------------------------------------------------- |
+| Color Picker    | Hex / RGB / HSL converter and picker                              |
+| Image Converter | Pre-isolated chunk; will load heavy WASM/canvas library in future |
 
 ---
 
@@ -87,13 +87,14 @@ Deployable to Cloudflare Pages, GitHub Pages, or Netlify as a static site.
 
 ## Non-Functional Requirements
 
-| Item                  | Description                                                                          |
-| --------------------- | ------------------------------------------------------------------------------------ |
-| Privacy               | All computation runs in the browser; no user data leaves the device                  |
-| No backend            | Static deployment; no API server needed                                              |
-| No external resources | No CDN fonts, analytics, or external scripts — all dependencies bundled via Bun/Vite |
-| Offline               | Site works without network after first load                                          |
-| Extensibility         | New tool = new folder under `src/tools/` + one entry in `src/tools/registry.ts`      |
+| Item                  | Description                                                                                                                                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Privacy               | All computation runs in the browser; no user data leaves the device                                                                                   |
+| No backend            | Static deployment; no API server needed                                                                                                               |
+| No external resources | No CDN fonts, analytics, or external scripts — all dependencies bundled via Bun/Vite                                                                  |
+| Offline               | Site works without network after first load                                                                                                           |
+| Extensibility         | New tool = new folder under `src/tools/` + one entry in `src/tools/registry.ts`                                                                       |
+| Smart input handling  | Tools auto-detect input format/state when reasonable (e.g. Base64 encode vs decode) and provide a manual override for edge cases like double-encoding |
 
 ---
 

@@ -34,7 +34,6 @@ export const TOOLS: Tool[] = [
     tags: ['base64', 'encode', 'decode', 'binary', 'text'],
     category: 'encoding',
     component: lazy(() => import('./base64')),
-    placeholder: true,
   },
   {
     id: 'color-picker',

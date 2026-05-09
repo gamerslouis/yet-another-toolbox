@@ -50,7 +50,7 @@ export function Sidebar({
               className="text-lg font-bold text-foreground tracking-tight"
               style={{ fontFamily: 'Georgia, serif' }}
             >
-              toolbox
+              Toolbox
             </span>
             <Button variant="ghost" size="icon" onClick={onToggle} title="Close sidebar">
               <X className="size-4" />
@@ -86,7 +86,10 @@ export function Sidebar({
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
                 )}
               >
-                <ToolIcon icon={tool.icon} className="text-base w-5 text-center flex items-center justify-center" />
+                <ToolIcon
+                  icon={tool.icon}
+                  className="text-base w-5 text-center flex items-center justify-center"
+                />
                 <span className="flex-1 truncate">{tool.label}</span>
                 {tool.placeholder && <span className="text-[10px] opacity-50 font-mono">soon</span>}
               </button>

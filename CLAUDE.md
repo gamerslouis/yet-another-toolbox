@@ -43,11 +43,13 @@ src/
 │   ├── Sidebar/          # Collapsible sidebar nav
 │   ├── CommandPalette/   # ⌘K search palette
 │   ├── ThemeProvider/    # Dark/light mode context
-│   └── ToolIcon.tsx      # Renders Tool['icon'] (string emoji or Lucide component)
+│   ├── ToolIcon.tsx      # Renders Tool['icon'] (string emoji or Lucide component)
+│   └── CopyButton.tsx    # Floating copy-to-clipboard button for text boxes
 └── lib/
     ├── utils.ts          # shadcn cn() helper
     ├── useLocalStorage.ts
-    └── useHotkey.ts
+    ├── useHotkey.ts
+    └── useClipboard.ts   # navigator.clipboard wrapper with copied-state feedback
 ```
 
 ## Adding a New Tool
@@ -70,6 +72,12 @@ src/
 `icon` accepts `string | ComponentType<{ className?: string }>`. Use `<ToolIcon icon={tool.icon} />` wherever you need to render it — never render `tool.icon` directly as a JSX child.
 
 4. Done — the tool appears in the sidebar and command palette automatically.
+
+## Tool UX Conventions
+
+- **Copy button**: every text input/output box gets a `<CopyButton>` floating top-right — wrap the textarea in `relative`, add `pr-10` to prevent text sliding under the button, place `<CopyButton className="absolute top-1.5 right-1.5" />` inside.
+- **No sample data**: initial state is always empty; placeholder text on the textarea guides the user.
+- **Smart auto-detect**: tools with a binary mode (encode/decode, etc.) should default to auto-detection and expose a manual override toggle.
 
 ## CSS / Theming Rules
 
