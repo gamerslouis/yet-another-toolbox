@@ -31,9 +31,9 @@ export function Sidebar({
         <button
           onClick={onToggle}
           title="Open sidebar"
-          className="fixed left-3 top-3 z-50 flex h-8 w-8 items-center justify-center rounded-md border border-border bg-card text-muted-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
+          className="fixed left-3 top-3 z-50 flex size-8 items-center justify-center rounded-md border border-border bg-card text-muted-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
         >
-          <Menu className="h-4 w-4" />
+          <Menu className="size-4" />
         </button>
       )}
 
@@ -52,7 +52,7 @@ export function Sidebar({
               toolbox
             </span>
             <Button variant="ghost" size="icon" onClick={onToggle} title="Close sidebar">
-              <X className="h-4 w-4" />
+              <X className="size-4" />
             </Button>
           </div>
 
@@ -64,7 +64,7 @@ export function Sidebar({
               onClick={onSearchOpen}
               className="flex w-full items-center gap-2 rounded-md border border-input bg-secondary px-3 py-2 text-xs text-muted-foreground hover:border-ring transition-colors"
             >
-              <Search className="h-3 w-3" />
+              <Search className="size-3" />
               <span className="flex-1 text-left">Search tools…</span>
               <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono">
                 ⌘K
@@ -97,7 +97,7 @@ export function Sidebar({
           {/* Footer */}
           <div className="flex items-center justify-end p-2">
             <Button variant="ghost" size="icon" onClick={toggle} title="Toggle dark mode">
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </Button>
           </div>
         </aside>

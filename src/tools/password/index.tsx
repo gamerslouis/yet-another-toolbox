@@ -3,10 +3,24 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
+import { cn } from '@/lib/utils'
 import { genPassword, strengthScore, type PasswordOptions } from './genPassword'
 
 const STRENGTH_LABELS = ['', 'Weak', 'Fair', 'Good', 'Strong'] as const
-const STRENGTH_COLORS = ['', '#ef4444', '#f59e0b', '#84cc16', 'var(--success)'] as const
+const STRENGTH_BG = [
+  '',
+  'bg-strength-1',
+  'bg-strength-2',
+  'bg-strength-3',
+  'bg-strength-4',
+] as const
+const STRENGTH_TEXT = [
+  '',
+  'text-strength-1',
+  'text-strength-2',
+  'text-strength-3',
+  'text-strength-4',
+] as const
 
 const DEFAULT_OPTS: PasswordOptions = {
   length: 16,
@@ -41,7 +55,6 @@ export default function PasswordTool() {
 
   const score = strengthScore(password)
   const strLabel = STRENGTH_LABELS[score]
-  const strColor = STRENGTH_COLORS[score]
 
   return (
     <div className="flex flex-col gap-5 max-w-md">
@@ -51,10 +64,10 @@ export default function PasswordTool() {
           {password || '—'}
         </span>
         <Button variant="ghost" size="icon" onClick={copy} title="Copy">
-          {copied ? <Check className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
+          {copied ? <Check className="size-4 text-success" /> : <Copy className="size-4" />}
         </Button>
         <Button variant="ghost" size="icon" onClick={generate} title="Regenerate">
-          <RefreshCw className="h-4 w-4" />
+          <RefreshCw className="size-4" />
         </Button>
       </div>
 
@@ -63,11 +76,13 @@ export default function PasswordTool() {
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="h-1 flex-1 rounded-full transition-colors duration-300"
-            style={{ background: i <= score ? strColor : 'var(--border)' }}
+            className={cn(
+              'h-1 flex-1 rounded-full transition-colors duration-300',
+              i <= score ? STRENGTH_BG[score] : 'bg-border',
+            )}
           />
         ))}
-        <span className="w-20 text-right text-xs font-medium" style={{ color: strColor }}>
+        <span className={cn('w-20 text-right text-xs font-medium', STRENGTH_TEXT[score])}>
           {strLabel}
         </span>
       </div>

@@ -63,7 +63,7 @@ export function CommandPalette({ tools, onSelect, onClose }: CommandPaletteProps
       >
         {/* Search input row */}
         <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-          <Search className="h-4 w-4 text-muted-foreground shrink-0" />
+          <Search className="size-4 text-muted-foreground shrink-0" />
           <input
             ref={inputRef}
             value={query}

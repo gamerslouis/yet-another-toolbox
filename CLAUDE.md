@@ -72,14 +72,19 @@ src/
 
 - All color/spacing tokens are in `src/index.css` as CSS custom properties
 - Dark mode: `.dark` class on `<html>` (shadcn convention)
-- **Never hardcode colors in components** — always use `var(--token)` or Tailwind utilities
-- Custom tokens (diff colors, sidebar width) are defined alongside shadcn tokens in `index.css`
+- **Never hardcode colors in components** — always use Tailwind semantic utilities (`bg-primary`, `text-muted-foreground`) or CSS variables exposed via `@theme inline`
+- **Never use `style={{ color: ... }}` or raw `var(--token)` in JSX** — add the token to `@theme inline` in `index.css` first, then use the generated Tailwind class
+- **No raw Tailwind color values** (`text-red-500`, `bg-emerald-600`) for status indicators — use semantic tokens or define a CSS variable
+- **Prefer `size-N` over `w-N h-N`** when width equals height (icons, avatars, square buttons)
+- Custom tool tokens (`--diff-add`, `--success`, `--strength-*`) are defined in `:root`/`.dark` and exposed in `@theme inline` so they work as Tailwind utilities
 
 ## shadcn/ui Components
 
-- Components live in `src/components/ui/` — these are owned by the project (not a library dep)
-- Add new components: `bunx --bun shadcn@latest add <component-name>`
-- Do not edit files in `src/components/ui/` manually unless patching a bug
+- Components live in `src/components/ui/` — these are owned by the project and can be edited
+- Add new components via CLI: `bunx --bun shadcn@latest add <component-name>`
+- When patching a component (bug fix, variant tweak), edit the file directly — that is the intended workflow
+- Use built-in variants first (`variant="outline"`, `size="sm"`) before reaching for `className` overrides
+- Use `cn()` from `@/lib/utils` for all conditional or merged class names
 
 ## Chunk Strategy
 

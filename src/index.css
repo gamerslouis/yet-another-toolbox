@@ -20,6 +20,17 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  /* tool-specific utility colors */
+  --color-diff-add: var(--diff-add);
+  --color-diff-add-bg: var(--diff-add-bg);
+  --color-diff-rem: var(--diff-rem);
+  --color-diff-rem-bg: var(--diff-rem-bg);
+  --color-success: var(--success);
+  --color-strength-1: var(--strength-1);
+  --color-strength-2: var(--strength-2);
+  --color-strength-3: var(--strength-3);
+  --color-strength-4: var(--strength-4);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -57,6 +68,10 @@
   --diff-rem: oklch(50% 0.22 26);
   --diff-rem-bg: oklch(96% 0.03 26);
   --success: oklch(57% 0.18 145);
+  --strength-1: oklch(53% 0.22 26);
+  --strength-2: oklch(62% 0.15 55);
+  --strength-3: oklch(67% 0.17 135);
+  --strength-4: oklch(57% 0.18 145);
   --sidebar-w: 240px;
 }
 
@@ -86,6 +101,10 @@
   --diff-rem: oklch(70% 0.16 26);
   --diff-rem-bg: oklch(14% 0.06 26);
   --success: oklch(72% 0.18 145);
+  --strength-1: oklch(65% 0.18 26);
+  --strength-2: oklch(72% 0.14 55);
+  --strength-3: oklch(75% 0.16 135);
+  --strength-4: oklch(72% 0.18 145);
 }
 
 /* ─── Base reset ──────────────────────────────────────────────────────────── */

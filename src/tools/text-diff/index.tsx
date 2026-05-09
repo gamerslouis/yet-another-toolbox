@@ -50,7 +50,7 @@ export default function TextDiffTool() {
       <div className="rounded-md border border-border overflow-hidden flex-1 min-h-0">
         <div className="flex items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2 text-xs font-semibold">
           {changeCount === 0 ? (
-            <span style={{ color: 'var(--success)' }}>✓ Identical</span>
+            <span className="text-success">✓ Identical</span>
           ) : (
             <span className="text-primary">{changeCount} change(s)</span>
           )}
@@ -60,15 +60,10 @@ export default function TextDiffTool() {
             <div
               key={i}
               className={cn('flex items-start px-3 py-0.5 leading-5', {
+                'bg-diff-add-bg text-diff-add': line.type === 'add',
+                'bg-diff-rem-bg text-diff-rem': line.type === 'remove',
                 'text-muted-foreground/50': line.type === 'equal',
               })}
-              style={
-                line.type === 'add'
-                  ? { background: 'var(--diff-add-bg)', color: 'var(--diff-add)' }
-                  : line.type === 'remove'
-                    ? { background: 'var(--diff-rem-bg)', color: 'var(--diff-rem)' }
-                    : {}
-              }
             >
               <span className="w-4 shrink-0 select-none text-center opacity-60">
                 {line.type === 'add' ? '+' : line.type === 'remove' ? '−' : ' '}
