@@ -6,6 +6,12 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { calcSubnet, isValidIPv4, isValidNetmask, shiftNetwork } from './ipCalc'
 
+const PRIVATE_NETWORKS = [
+  ['10.0.0.0', '8', '10/8'],
+  ['172.16.0.0', '12', '172.16/12'],
+  ['192.168.0.0', '16', '192.168/16'],
+] as const
+
 export default function IpCalculatorTool() {
   const [address, setAddress] = useState('')
   const [netmask, setNetmask] = useState('')
@@ -15,28 +21,19 @@ export default function IpCalculatorTool() {
   const info =
     address && netmask && !addressError && !netmaskError ? calcSubnet(address, netmask) : null
 
-  const results: [string, string][] = info
+  const results: [label: string, value: string, copyable: boolean][] = info
     ? [
-        ['Address', info.address],
-        ['Netmask', `${info.subnetMask} / ${info.subnetMaskLength}`],
-        ['Wildcard', info.wildcardMask],
-        ['Network', info.networkAddress],
-        ['Broadcast', info.broadcastAddress],
-        ['First host', info.firstAddress],
-        ['Last host', info.lastAddress],
-        ['Hosts', info.numHosts.toLocaleString()],
-        ['Private', info.isPrivate ? 'Yes' : 'No'],
+        ['Address', info.address, true],
+        ['Netmask', `${info.subnetMask} / ${info.subnetMaskLength}`, true],
+        ['Wildcard', info.wildcardMask, true],
+        ['Network', info.networkAddress, true],
+        ['Broadcast', info.broadcastAddress, true],
+        ['First host', info.firstAddress, true],
+        ['Last host', info.lastAddress, true],
+        ['Hosts', info.numHosts.toLocaleString(), false],
+        ['Private', info.isPrivate ? 'Yes' : 'No', false],
       ]
     : []
-
-  const NON_COPYABLE = new Set(['Hosts', 'Private'])
-
-  const handleClassChange = (prefix: string) => setNetmask(prefix)
-
-  const handlePrivateNetwork = (addr: string, prefix: string) => {
-    setAddress(addr)
-    setNetmask(prefix)
-  }
 
   const handleShift = (next: boolean) => {
     if (!address || !netmask || addressError || netmaskError) return
@@ -72,7 +69,7 @@ export default function IpCalculatorTool() {
                   key={p}
                   variant="outline"
                   size="sm"
-                  onClick={() => handleClassChange(p)}
+                  onClick={() => setNetmask(p)}
                   className="px-2 text-xs"
                 >
                   /{p}
@@ -84,18 +81,15 @@ export default function IpCalculatorTool() {
 
         <Field label="Private network">
           <div className="flex flex-wrap gap-1">
-            {(
-              [
-                ['10.0.0.0', '8', '10/8'],
-                ['172.16.0.0', '12', '172.16/12'],
-                ['192.168.0.0', '16', '192.168/16'],
-              ] as const
-            ).map(([addr, prefix, label]) => (
+            {PRIVATE_NETWORKS.map(([addr, prefix, label]) => (
               <Button
                 key={label}
                 variant="outline"
                 size="sm"
-                onClick={() => handlePrivateNetwork(addr, prefix)}
+                onClick={() => {
+                  setAddress(addr)
+                  setNetmask(prefix)
+                }}
                 className="text-xs"
               >
                 {label}
@@ -120,13 +114,13 @@ export default function IpCalculatorTool() {
 
       {info ? (
         <div className="flex flex-col gap-2">
-          {results.map(([label, value]) => (
+          {results.map(([label, value, copyable]) => (
             <div key={label} className="flex items-center gap-2">
               <span className="w-24 shrink-0 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {label}
               </span>
               <span className="flex-1 font-mono text-sm text-foreground">{value}</span>
-              {!NON_COPYABLE.has(label) && <CopyButton text={value} className="shrink-0" />}
+              {copyable && <CopyButton text={value} className="shrink-0" />}
             </div>
           ))}
         </div>
