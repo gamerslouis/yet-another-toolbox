@@ -53,7 +53,7 @@ export default function PasswordTool() {
   return (
     <div className="flex flex-col gap-5 max-w-md">
       {/* Password display */}
-      <div className="flex items-center gap-2 rounded-md border border-border bg-secondary px-4 py-3">
+      <div className="flex items-center gap-2 rounded-md border border-border bg-background px-4 py-3">
         <span className="flex-1 font-mono text-base tracking-widest break-all text-foreground">
           {password || '—'}
         </span>
