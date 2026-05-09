@@ -15,7 +15,6 @@ export function CopyButton({ text, className }: Props) {
       variant="ghost"
       size="icon"
       onClick={() => copy(text)}
-      disabled={!text}
       title="Copy"
       className={cn('size-7', className)}
     >
