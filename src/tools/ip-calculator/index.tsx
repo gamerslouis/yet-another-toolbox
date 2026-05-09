@@ -1,32 +1,19 @@
-import { Check, Copy } from 'lucide-react'
 import { useState } from 'react'
+import { CopyButton } from '@/components/CopyButton'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { calcSubnet, isValidIPv4, isValidNetmask, shiftNetwork } from './ipCalc'
 
-const INITIAL_ADDRESS = '192.168.0.1'
-const INITIAL_NETMASK = '24'
-
-function useClipboard() {
-  const [copiedKey, setCopiedKey] = useState<string | null>(null)
-  const copy = (key: string, value: string) => {
-    void navigator.clipboard.writeText(value)
-    setCopiedKey(key)
-    setTimeout(() => setCopiedKey(null), 1500)
-  }
-  return { copiedKey, copy }
-}
-
 export default function IpCalculatorTool() {
-  const [address, setAddress] = useState(INITIAL_ADDRESS)
-  const [netmask, setNetmask] = useState(INITIAL_NETMASK)
-  const { copiedKey, copy } = useClipboard()
+  const [address, setAddress] = useState('')
+  const [netmask, setNetmask] = useState('')
 
   const addressError = address && !isValidIPv4(address) ? 'Invalid IPv4 address' : null
   const netmaskError = netmask && !isValidNetmask(netmask) ? 'Invalid netmask or prefix' : null
-  const info = !addressError && !netmaskError ? calcSubnet(address, netmask) : null
+  const info =
+    address && netmask && !addressError && !netmaskError ? calcSubnet(address, netmask) : null
 
   const results: [string, string][] = info
     ? [
@@ -42,6 +29,8 @@ export default function IpCalculatorTool() {
       ]
     : []
 
+  const NON_COPYABLE = new Set(['Hosts', 'Private'])
+
   const handleClassChange = (prefix: string) => setNetmask(prefix)
 
   const handlePrivateNetwork = (addr: string, prefix: string) => {
@@ -50,12 +39,12 @@ export default function IpCalculatorTool() {
   }
 
   const handleShift = (next: boolean) => {
-    setAddress((prev) => shiftNetwork(prev, netmask, next))
+    if (!address || !netmask || addressError || netmaskError) return
+    setAddress(shiftNetwork(address, netmask, next))
   }
 
   return (
     <div className="flex flex-col gap-5 max-w-lg">
-      {/* Inputs */}
       <div className="flex flex-col gap-3">
         <Field label="Address" error={addressError}>
           <Input
@@ -129,7 +118,6 @@ export default function IpCalculatorTool() {
 
       <Separator />
 
-      {/* Results */}
       {info ? (
         <div className="flex flex-col gap-2">
           {results.map(([label, value]) => (
@@ -138,27 +126,13 @@ export default function IpCalculatorTool() {
                 {label}
               </span>
               <span className="flex-1 font-mono text-sm text-foreground">{value}</span>
-              {label !== 'Hosts' && label !== 'Private' && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-7 shrink-0"
-                  onClick={() => copy(label, value)}
-                  title={`Copy ${label}`}
-                >
-                  {copiedKey === label ? (
-                    <Check className="size-3.5 text-success" />
-                  ) : (
-                    <Copy className="size-3.5" />
-                  )}
-                </Button>
-              )}
+              {!NON_COPYABLE.has(label) && <CopyButton text={value} className="shrink-0" />}
             </div>
           ))}
         </div>
       ) : (
         <p className="text-sm text-muted-foreground">
-          {addressError ?? netmaskError ?? 'Enter a valid IP address and netmask above.'}
+          {addressError ?? netmaskError ?? 'Enter an IP address and netmask above.'}
         </p>
       )}
     </div>
