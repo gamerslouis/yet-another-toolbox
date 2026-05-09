@@ -1,4 +1,5 @@
 import { Suspense, useCallback, useState } from 'react'
+import { GithubIcon, BookOpen } from 'lucide-react'
 import { CommandPalette } from '@/components/CommandPalette/CommandPalette'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider'
@@ -71,6 +72,26 @@ function AppShell() {
           >
             {activeTool.label}
           </h1>
+          <div className="ml-auto flex items-center gap-1">
+            <a
+              href="https://github.com/gamerslouis/yet-another-toolbox"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex size-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+              aria-label="GitHub repository"
+            >
+              <GithubIcon className="size-4" />
+            </a>
+            <a
+              href="https://blog.louisif.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex size-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+              aria-label="Blog"
+            >
+              <BookOpen className="size-4" />
+            </a>
+          </div>
         </header>
 
         {/* Tool content */}
