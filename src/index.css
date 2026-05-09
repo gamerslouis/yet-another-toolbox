@@ -1,0 +1,124 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+/* ─── Light theme ─────────────────────────────────────────────────────────── */
+:root {
+  /* shadcn/ui semantic tokens — mapped to reference template palette */
+  --background: oklch(97.5% 0.004 85);
+  --foreground: oklch(11% 0.005 85);
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(11% 0.005 85);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(11% 0.005 85);
+  --primary: oklch(51% 0.23 264);
+  --primary-foreground: oklch(100% 0 0);
+  --secondary: oklch(94% 0.004 85);
+  --secondary-foreground: oklch(30% 0.007 85);
+  --muted: oklch(94% 0.004 85);
+  --muted-foreground: oklch(47% 0.01 85);
+  --accent: oklch(94% 0.004 85);
+  --accent-foreground: oklch(11% 0.005 85);
+  --destructive: oklch(53% 0.22 26);
+  --border: oklch(88% 0.006 85);
+  --input: oklch(88% 0.006 85);
+  --ring: oklch(51% 0.23 264);
+  --radius: 0.5rem;
+
+  /* tool-specific tokens */
+  --diff-add: oklch(55% 0.18 145);
+  --diff-add-bg: oklch(96% 0.05 145);
+  --diff-rem: oklch(50% 0.22 26);
+  --diff-rem-bg: oklch(96% 0.03 26);
+  --success: oklch(57% 0.18 145);
+  --sidebar-w: 240px;
+}
+
+/* ─── Dark theme ──────────────────────────────────────────────────────────── */
+.dark {
+  --background: oklch(8.5% 0.002 85);
+  --foreground: oklch(94% 0.004 85);
+  --card: oklch(13% 0.003 85);
+  --card-foreground: oklch(94% 0.004 85);
+  --popover: oklch(13% 0.003 85);
+  --popover-foreground: oklch(94% 0.004 85);
+  --primary: oklch(72% 0.17 262);
+  --primary-foreground: oklch(8.5% 0.002 85);
+  --secondary: oklch(16% 0.003 85);
+  --secondary-foreground: oklch(94% 0.004 85);
+  --muted: oklch(16% 0.003 85);
+  --muted-foreground: oklch(60% 0.008 85);
+  --accent: oklch(16% 0.003 85);
+  --accent-foreground: oklch(94% 0.004 85);
+  --destructive: oklch(65% 0.18 26);
+  --border: oklch(20% 0.003 85);
+  --input: oklch(20% 0.003 85);
+  --ring: oklch(72% 0.17 262);
+
+  --diff-add: oklch(72% 0.18 145);
+  --diff-add-bg: oklch(15% 0.07 145);
+  --diff-rem: oklch(70% 0.16 26);
+  --diff-rem-bg: oklch(14% 0.06 26);
+  --success: oklch(72% 0.18 145);
+}
+
+/* ─── Base reset ──────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+}
