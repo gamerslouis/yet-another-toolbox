@@ -92,6 +92,29 @@ The `image-converter` chunk is intentionally pre-isolated for a future heavy WAS
 - Main app shell: < 30KB
 - Each tool chunk: < 15KB
 
+## Before Every Commit
+
+Run and fix both checks before committing. CI enforces them on every PR and will block merge if either fails.
+
+```bash
+bun run format   # auto-fix formatting (Prettier)
+bun run lint     # report ESLint issues (fix manually)
+```
+
+Prettier check is `--check` mode in CI (read-only). Run `bun run format` locally to write fixes, then stage the changes.
+
+## CI (GitHub Actions)
+
+Three jobs run on every PR and on pushes to `main`:
+
+| Job               | What it does                                              |
+| ----------------- | --------------------------------------------------------- |
+| **Lint & Format** | `prettier --check .` then `eslint .`                      |
+| **Type Check**    | `tsc --noEmit -p tsconfig.app.json`                       |
+| **Build**         | `vite build` (verifies no broken imports or chunk errors) |
+
+Workflow file: `.github/workflows/ci.yml`
+
 ## Code Style
 
 - No semicolons, single quotes, 2-space indent (enforced by Prettier)
