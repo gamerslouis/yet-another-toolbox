@@ -52,11 +52,26 @@ src/
     └── useClipboard.ts   # navigator.clipboard wrapper with copied-state feedback
 ```
 
+## Testing
+
+Pure logic modules (`.ts` helper files alongside tool components) must have unit tests.
+
+- Test file: `src/tools/<tool-id>/<helper>.test.ts` (co-located with the module)
+- Runner: `bun test` (built-in, no extra config needed)
+- Cover: valid inputs, invalid/edge inputs, boundary values, and any non-obvious invariants
+- Do **not** test React components — test the pure functions they call
+
+```bash
+bun test                        # run all tests
+bun test src/tools/ip-calculator/ipCalc.test.ts   # run one file
+```
+
 ## Adding a New Tool
 
 1. Create `src/tools/<tool-id>/index.tsx` (default export = React page component)
 2. Add pure logic helpers alongside: `src/tools/<tool-id>/<helper>.ts`
-3. Add one entry to `src/tools/registry.ts`:
+3. Add unit tests: `src/tools/<tool-id>/<helper>.test.ts`
+4. Add one entry to `src/tools/registry.ts`:
 
 ```ts
 {
@@ -71,7 +86,7 @@ src/
 
 `icon` accepts `string | ComponentType<{ className?: string }>`. Use `<ToolIcon icon={tool.icon} />` wherever you need to render it — never render `tool.icon` directly as a JSX child.
 
-4. Done — the tool appears in the sidebar and command palette automatically.
+5. Done — the tool appears in the sidebar and command palette automatically.
 
 ## Tool UX Conventions
 
