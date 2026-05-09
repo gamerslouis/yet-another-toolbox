@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { Braces } from 'lucide-react'
 import type { Tool } from '@/types'
 
 export const TOOLS: Tool[] = [
@@ -21,7 +22,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'json-formatter',
     label: 'JSON Formatter',
-    icon: '{ }',
+    icon: Braces,
     tags: ['json', 'format', 'validate', 'pretty', 'parse'],
     category: 'code',
     component: lazy(() => import('./json-formatter')),

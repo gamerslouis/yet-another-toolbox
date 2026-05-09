@@ -42,7 +42,8 @@ src/
 │   ├── ui/               # shadcn/ui components (auto-generated, do not edit manually)
 │   ├── Sidebar/          # Collapsible sidebar nav
 │   ├── CommandPalette/   # ⌘K search palette
-│   └── ThemeProvider/    # Dark/light mode context
+│   ├── ThemeProvider/    # Dark/light mode context
+│   └── ToolIcon.tsx      # Renders Tool['icon'] (string emoji or Lucide component)
 └── lib/
     ├── utils.ts          # shadcn cn() helper
     ├── useLocalStorage.ts
@@ -59,12 +60,14 @@ src/
 {
   id: 'my-tool',
   label: 'My Tool',
-  icon: '⚙',
+  icon: '⚙',             // string emoji, or a Lucide component: icon: Braces
   tags: ['keyword1', 'keyword2'],
   category: 'misc',
   component: lazy(() => import('./my-tool')),
 }
 ```
+
+`icon` accepts `string | ComponentType<{ className?: string }>`. Use `<ToolIcon icon={tool.icon} />` wherever you need to render it — never render `tool.icon` directly as a JSX child.
 
 4. Done — the tool appears in the sidebar and command palette automatically.
 

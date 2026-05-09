@@ -3,7 +3,7 @@ import type { ComponentType, LazyExoticComponent } from 'react'
 export interface Tool {
   id: string
   label: string
-  icon: string
+  icon: string | ComponentType<{ className?: string }>
   tags: string[]
   category: string
   component: LazyExoticComponent<ComponentType>

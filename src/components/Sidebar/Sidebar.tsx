@@ -2,6 +2,7 @@ import { Menu, Moon, Search, Sun, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useTheme } from '@/components/ThemeProvider/useTheme'
+import { ToolIcon } from '@/components/ToolIcon'
 import { cn } from '@/lib/utils'
 import type { Tool } from '@/types'
 
@@ -85,7 +86,7 @@ export function Sidebar({
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
                 )}
               >
-                <span className="text-base w-5 text-center">{tool.icon}</span>
+                <ToolIcon icon={tool.icon} className="text-base w-5 text-center flex items-center justify-center" />
                 <span className="flex-1 truncate">{tool.label}</span>
                 {tool.placeholder && <span className="text-[10px] opacity-50 font-mono">soon</span>}
               </button>

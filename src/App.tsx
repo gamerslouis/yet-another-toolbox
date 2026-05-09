@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider'
 import { useLocalStorage } from '@/lib/useLocalStorage'
 import { useHotkey } from '@/lib/useHotkey'
 import { TOOLS } from '@/tools/registry'
+import { ToolIcon } from '@/components/ToolIcon'
 import type { Tool } from '@/types'
 
 function Spinner() {
@@ -63,7 +64,7 @@ function AppShell() {
         <header className="flex items-center gap-3 border-b border-border bg-card px-6 py-4 shrink-0">
           {/* Offset for hamburger when sidebar is collapsed */}
           {!sidebarOpen && <div className="w-8" />}
-          <span className="text-xl">{activeTool.icon}</span>
+          <ToolIcon icon={activeTool.icon} className="text-xl" iconClassName="size-5" />
           <h1
             className="text-base font-semibold text-foreground"
             style={{ fontFamily: 'Georgia, serif' }}

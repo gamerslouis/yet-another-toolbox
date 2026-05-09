@@ -1,6 +1,7 @@
 import { Search } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { ToolIcon } from '@/components/ToolIcon'
 import type { Tool } from '@/types'
 
 interface CommandPaletteProps {
@@ -92,7 +93,7 @@ export function CommandPalette({ tools, onSelect, onClose }: CommandPaletteProps
                 onMouseEnter={() => setCursor(i)}
                 onClick={() => onSelect(tool)}
               >
-                <span className="w-6 text-center text-base text-muted-foreground">{tool.icon}</span>
+                <ToolIcon icon={tool.icon} className="w-6 text-center text-base text-muted-foreground flex items-center justify-center" />
                 <span className="flex-1 text-sm text-foreground">{tool.label}</span>
                 {i === cursor && (
                   <kbd className="rounded border border-border bg-secondary px-1 py-0.5 text-[10px] font-mono text-muted-foreground">
