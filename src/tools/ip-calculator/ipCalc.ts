@@ -56,10 +56,12 @@ export function isValidNetmask(netmask: string): boolean {
 
 function isPrivateIp(ip: string): boolean {
   const n = ipToLong(ip)
+  // >>> 0 converts each bitwise-AND result from signed-32 back to unsigned so the
+  // hex literals (which JS parses as unsigned) compare correctly for high-bit ranges.
   return (
-    (n & 0xff000000) === 0x0a000000 || // 10.0.0.0/8
-    (n & 0xfff00000) === 0xac100000 || // 172.16.0.0/12
-    (n & 0xffff0000) === 0xc0a80000 // 192.168.0.0/16
+    (n & 0xff000000) >>> 0 === 0x0a000000 || // 10.0.0.0/8
+    (n & 0xfff00000) >>> 0 === 0xac100000 || // 172.16.0.0/12
+    (n & 0xffff0000) >>> 0 === 0xc0a80000 // 192.168.0.0/16
   )
 }
 
