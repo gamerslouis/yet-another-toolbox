@@ -63,7 +63,7 @@ export function Sidebar({
           <div className="p-2">
             <button
               onClick={onSearchOpen}
-              className="flex w-full items-center gap-2 rounded-md border border-input bg-secondary px-3 py-2 text-xs text-muted-foreground hover:border-ring transition-colors"
+              className="flex w-full cursor-pointer items-center gap-2 rounded-md border border-input bg-secondary px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-ring hover:bg-accent hover:text-accent-foreground"
             >
               <Search className="size-3" />
               <span className="flex-1 text-left">Search tools…</span>
@@ -80,7 +80,7 @@ export function Sidebar({
                 key={tool.id}
                 onClick={() => onSelect(tool)}
                 className={cn(
-                  'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors w-full text-left',
+                  'flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors w-full text-left',
                   activeTool.id === tool.id
                     ? 'bg-primary/10 text-primary font-medium'
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
