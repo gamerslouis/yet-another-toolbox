@@ -79,6 +79,16 @@ src/
 - **No sample data**: initial state is always empty; placeholder text on the textarea guides the user.
 - **Smart auto-detect**: tools with a binary mode (encode/decode, etc.) should default to auto-detection and expose a manual override toggle.
 
+## UX Principles
+
+- **Cursor pointer on all interactive elements** — every clickable element (`<button>`, `<a>`, shadcn `Button`) must have `cursor-pointer`. The shadcn `Button` base class already includes it; raw `<button>` elements must add it explicitly.
+- **Hover must have visible color feedback** — every interactive element needs a perceptible background or text color change on hover. `ghost` buttons use `hover:bg-accent`; avoid placing them on `bg-secondary` containers because `--accent === --secondary` in this theme, making the hover invisible. Use `bg-background` or `bg-card` as the container background instead.
+- **Never disable a button just to suppress a no-op** — if a button does nothing when its source is empty, guard inside the handler (e.g. `if (!text) return`). Do not set `disabled` — it removes `pointer-events`, killing cursor and hover feedback.
+- **Dark mode hover must have sufficient lightness contrast** — `--accent` in dark mode must be visibly brighter than `--card` and `--secondary`. Current value: `oklch(24%)` (card is `13%`, secondary is `16%`). Do not let accent drift back below `20%`.
+- **Live results, no submit button** — tools that transform input (Text Diff, JSON Formatter, Base64) update output on every keystroke via `useMemo`. Never add a submit/run button for synchronous transformations.
+- **No sample data on load** — initial state is always empty; `placeholder` text on the textarea guides the user. Avoid pre-filling inputs with demo content.
+- **Smart auto-detect with manual override** — tools with a binary mode (encode/decode, etc.) should detect the likely intent from the input and default to it. Always expose a manual toggle for edge cases (e.g. double-encoding).
+
 ## CSS / Theming Rules
 
 - All color/spacing tokens are in `src/index.css` as CSS custom properties
