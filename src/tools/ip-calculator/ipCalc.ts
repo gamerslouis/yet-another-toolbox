@@ -105,6 +105,12 @@ export function calcSubnet(address: string, netmask: string): SubnetInfo | null 
   }
 }
 
+export function parseCidr(input: string): { address: string; netmask: string } | null {
+  const slash = input.indexOf('/')
+  if (slash === -1) return null
+  return { address: input.slice(0, slash), netmask: input.slice(slash + 1) }
+}
+
 export function shiftNetwork(address: string, netmask: string, next: boolean): string {
   const info = calcSubnet(address, netmask)
   if (!info) return address

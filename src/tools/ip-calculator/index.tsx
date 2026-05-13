@@ -4,22 +4,28 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { calcSubnet, isValidIPv4, isValidNetmask, shiftNetwork } from './ipCalc'
+import { calcSubnet, isValidIPv4, isValidNetmask, parseCidr, shiftNetwork } from './ipCalc'
 
 const PRIVATE_NETWORKS = [
-  ['10.0.0.0', '8', '10/8'],
-  ['172.16.0.0', '12', '172.16/12'],
-  ['192.168.0.0', '16', '192.168/16'],
+  ['10.0.0.0/8', '10/8'],
+  ['172.16.0.0/12', '172.16/12'],
+  ['192.168.0.0/16', '192.168/16'],
 ] as const
 
-export default function IpCalculatorTool() {
-  const [address, setAddress] = useState('')
-  const [netmask, setNetmask] = useState('')
+function getCidrError(cidr: string, parsed: ReturnType<typeof parseCidr>): string | null {
+  if (!cidr) return null
+  if (!parsed) return 'Use CIDR format, e.g. 192.168.1.0/24'
+  if (!isValidIPv4(parsed.address)) return 'Invalid IPv4 address'
+  if (!isValidNetmask(parsed.netmask)) return 'Invalid netmask or prefix'
+  return null
+}
 
-  const addressError = address && !isValidIPv4(address) ? 'Invalid IPv4 address' : null
-  const netmaskError = netmask && !isValidNetmask(netmask) ? 'Invalid netmask or prefix' : null
-  const info =
-    address && netmask && !addressError && !netmaskError ? calcSubnet(address, netmask) : null
+export default function IpCalculatorTool() {
+  const [cidr, setCidr] = useState('')
+
+  const parsed = parseCidr(cidr)
+  const cidrError = getCidrError(cidr, parsed)
+  const info = parsed && !cidrError ? calcSubnet(parsed.address, parsed.netmask) : null
 
   const results: [label: string, value: string, copyable: boolean][] = info
     ? [
@@ -35,61 +41,53 @@ export default function IpCalculatorTool() {
       ]
     : []
 
+  const handleSetPrefix = (prefix: string) => {
+    const ip = parsed?.address ?? cidr
+    setCidr(`${ip}/${prefix}`)
+  }
+
   const handleShift = (next: boolean) => {
-    if (!address || !netmask || addressError || netmaskError) return
-    setAddress(shiftNetwork(address, netmask, next))
+    if (!parsed || cidrError) return
+    const newAddress = shiftNetwork(parsed.address, parsed.netmask, next)
+    setCidr(`${newAddress}/${parsed.netmask}`)
   }
 
   return (
     <div className="flex flex-col gap-5 max-w-lg">
       <div className="flex flex-col gap-3">
-        <Field label="Address" error={addressError}>
+        <Field label="IP / CIDR" error={cidrError}>
           <Input
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="e.g. 192.168.0.1"
-            className={cn(addressError && 'border-destructive focus-visible:ring-destructive')}
+            value={cidr}
+            onChange={(e) => setCidr(e.target.value)}
+            placeholder="e.g. 192.168.1.0/24 or 10.0.0.1/255.0.0.0"
+            className={cn(cidrError && 'border-destructive focus-visible:ring-destructive')}
           />
         </Field>
 
-        <Field label="Netmask / Prefix" error={netmaskError}>
-          <div className="flex flex-wrap items-center gap-2">
-            <Input
-              value={netmask}
-              onChange={(e) => setNetmask(e.target.value)}
-              placeholder="e.g. 24 or 255.255.255.0"
-              className={cn(
-                'min-w-0 flex-1',
-                netmaskError && 'border-destructive focus-visible:ring-destructive',
-              )}
-            />
-            <div className="flex gap-1">
-              {(['8', '16', '24'] as const).map((p) => (
-                <Button
-                  key={p}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setNetmask(p)}
-                  className="px-2 text-xs"
-                >
-                  /{p}
-                </Button>
-              ))}
-            </div>
+        <Field label="Quick prefix">
+          <div className="flex gap-1">
+            {(['8', '16', '24'] as const).map((p) => (
+              <Button
+                key={p}
+                variant="outline"
+                size="sm"
+                onClick={() => handleSetPrefix(p)}
+                className="px-2 text-xs"
+              >
+                /{p}
+              </Button>
+            ))}
           </div>
         </Field>
 
         <Field label="Private network">
           <div className="flex flex-wrap gap-1">
-            {PRIVATE_NETWORKS.map(([addr, prefix, label]) => (
+            {PRIVATE_NETWORKS.map(([cidrVal, label]) => (
               <Button
                 key={label}
                 variant="outline"
                 size="sm"
-                onClick={() => {
-                  setAddress(addr)
-                  setNetmask(prefix)
-                }}
+                onClick={() => setCidr(cidrVal)}
                 className="text-xs"
               >
                 {label}
@@ -126,7 +124,7 @@ export default function IpCalculatorTool() {
         </div>
       ) : (
         <p className="text-sm text-muted-foreground">
-          {addressError ?? netmaskError ?? 'Enter an IP address and netmask above.'}
+          {cidrError ?? 'Enter an IP address in CIDR notation above.'}
         </p>
       )}
     </div>

@@ -1,5 +1,24 @@
 import { describe, expect, test } from 'bun:test'
-import { calcSubnet, isValidIPv4, isValidNetmask, shiftNetwork } from './ipCalc'
+import { calcSubnet, isValidIPv4, isValidNetmask, parseCidr, shiftNetwork } from './ipCalc'
+
+describe('parseCidr', () => {
+  test('parses CIDR prefix notation', () => {
+    expect(parseCidr('192.168.1.0/24')).toEqual({ address: '192.168.1.0', netmask: '24' })
+    expect(parseCidr('10.0.0.0/8')).toEqual({ address: '10.0.0.0', netmask: '8' })
+  })
+
+  test('parses dotted-decimal mask notation', () => {
+    expect(parseCidr('192.168.1.0/255.255.255.0')).toEqual({
+      address: '192.168.1.0',
+      netmask: '255.255.255.0',
+    })
+  })
+
+  test('returns null when no slash present', () => {
+    expect(parseCidr('192.168.1.0')).toBeNull()
+    expect(parseCidr('')).toBeNull()
+  })
+})
 
 describe('isValidIPv4', () => {
   test('accepts valid addresses', () => {
