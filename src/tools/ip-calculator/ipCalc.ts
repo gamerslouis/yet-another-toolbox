@@ -11,11 +11,11 @@ export interface SubnetInfo {
   isPrivate: boolean
 }
 
-function ipToLong(ip: string): number {
+export function ipToLong(ip: string): number {
   return ip.split('.').reduce((acc, octet) => ((acc << 8) + parseInt(octet, 10)) >>> 0, 0)
 }
 
-function longToIp(n: number): string {
+export function longToIp(n: number): string {
   return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.')
 }
 

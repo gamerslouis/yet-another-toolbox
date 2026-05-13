@@ -36,6 +36,14 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./ip-calculator')),
   },
   {
+    id: 'route-aggregation',
+    label: 'Route Aggregation',
+    icon: '⇲',
+    tags: ['ip', 'cidr', 'subnet', 'aggregate', 'summarize', 'network', 'route'],
+    category: 'network',
+    component: lazy(() => import('./route-aggregation')),
+  },
+  {
     id: 'base64',
     label: 'Base64 Encode/Decode',
     icon: '⇌',
