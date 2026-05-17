@@ -45,8 +45,8 @@ function ToggleGroup<T extends string>({
 
 export default function TextEncodeTool() {
   const [input, setInput] = useState('')
-  const [codec, setCodec] = useState('auto')
-  const [direction, setDirection] = useState('auto')
+  const [codec, setCodec] = useState<Codec>(CODECS[0])
+  const [direction, setDirection] = useState<Direction>(DIRECTIONS[0])
 
   const result = useMemo(() => process(input, codec, direction), [input, codec, direction])
   const output = result.ok ? result.output : ''
