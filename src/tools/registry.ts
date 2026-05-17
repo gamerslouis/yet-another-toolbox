@@ -52,12 +52,12 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./timestamp')),
   },
   {
-    id: 'base64',
-    label: 'Base64 Encode/Decode',
+    id: 'text-encode',
+    label: 'Text Encode/Decode',
     icon: '⇌',
-    tags: ['base64', 'encode', 'decode', 'binary', 'text'],
+    tags: ['base64', 'url', 'encode', 'decode', 'uri', 'percent', 'text', 'binary'],
     category: 'encoding',
-    component: lazy(() => import('./base64')),
+    component: lazy(() => import('./text-encode')),
   },
   {
     id: 'color-picker',
