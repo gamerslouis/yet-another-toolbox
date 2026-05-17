@@ -44,6 +44,14 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./route-aggregation')),
   },
   {
+    id: 'timestamp',
+    label: 'Timestamp Converter',
+    icon: '⏱',
+    tags: ['unix', 'timestamp', 'epoch', 'time', 'date', 'converter', 'iso', 'utc'],
+    category: 'time',
+    component: lazy(() => import('./timestamp')),
+  },
+  {
     id: 'base64',
     label: 'Base64 Encode/Decode',
     icon: '⇌',
